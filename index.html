@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Sentiment Analyzer</title>
+  <style>
+    body {
+      font-family: Arial;
+      margin: 50px;
+      text-align: center;
+    }
+
+textarea {
+  width: 400px;
+  height: 100px;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+#result {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+  </style>
+</head>
+
+<body>
+
+<h1>Sentiment Analyzer</h1>
+
+<p>Enter a review:</p>
+
+<textarea id="review"></textarea>
+
+<br>
+
+<button onclick="analyze()">Analyze Sentiment</button>
+
+<div id="result"></div>
+
+<script>
+
+const API_URL = "http://sentiment-alb-757626889.eu-west-1.elb.amazonaws.com/predict";
+
+async function analyze() {
+
+  const text = document.getElementById("review").value;
+
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ text: text })
+  });
+
+  const data = await response.json();
+
+  document.getElementById("result").innerText =
+    "Prediction: " + data.prediction;
+}
+
+</script>
+
+</body>
+</html>
